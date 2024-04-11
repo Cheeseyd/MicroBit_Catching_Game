@@ -1,95 +1,110 @@
 input.onButtonPressed(Button.A, function () {
-    MyGuy += -1
-    if (MyGuy == 1) {
-        led.plot(0, 4)
-        led.unplot(1, 4)
-        led.unplot(4, 4)
-    } else if (MyGuy == 2) {
-        led.unplot(0, 4)
-        led.plot(1, 4)
-        led.unplot(2, 4)
-    } else if (MyGuy == 3) {
-        led.unplot(1, 4)
-        led.plot(2, 4)
-        led.unplot(3, 4)
-    } else if (MyGuy == 4) {
-        led.unplot(2, 4)
-        led.plot(3, 4)
-        led.unplot(4, 4)
+    if (Setup == 1) {
+        Difficulty = 0
+        Setup = 0
+        basic.clearScreen()
     } else {
-        led.unplot(3, 4)
-        led.plot(4, 4)
-        led.unplot(0, 4)
+        MyGuy += -1
+        if (MyGuy == 1) {
+            led.plot(0, 4)
+            led.unplot(1, 4)
+            led.unplot(4, 4)
+        } else if (MyGuy == 2) {
+            led.unplot(0, 4)
+            led.plot(1, 4)
+            led.unplot(2, 4)
+        } else if (MyGuy == 3) {
+            led.unplot(1, 4)
+            led.plot(2, 4)
+            led.unplot(3, 4)
+        } else if (MyGuy == 4) {
+            led.unplot(2, 4)
+            led.plot(3, 4)
+            led.unplot(4, 4)
+        } else {
+            led.unplot(3, 4)
+            led.plot(4, 4)
+            led.unplot(0, 4)
+        }
     }
 })
 input.onButtonPressed(Button.B, function () {
-    MyGuy += 1
-    if (MyGuy == 1) {
-        led.plot(0, 4)
-        led.unplot(1, 4)
-        led.unplot(4, 4)
-    } else if (MyGuy == 2) {
-        led.unplot(0, 4)
-        led.plot(1, 4)
-        led.unplot(2, 4)
-    } else if (MyGuy == 3) {
-        led.unplot(1, 4)
-        led.plot(2, 4)
-        led.unplot(3, 4)
-    } else if (MyGuy == 4) {
-        led.unplot(2, 4)
-        led.plot(3, 4)
-        led.unplot(4, 4)
+    if (Setup == 1) {
+        Difficulty = 2
+        Setup = 0
+        basic.clearScreen()
     } else {
-        led.unplot(3, 4)
-        led.plot(4, 4)
-        led.unplot(0, 4)
+        MyGuy += 1
+        if (MyGuy == 1) {
+            led.plot(0, 4)
+            led.unplot(1, 4)
+            led.unplot(4, 4)
+        } else if (MyGuy == 2) {
+            led.unplot(0, 4)
+            led.plot(1, 4)
+            led.unplot(2, 4)
+        } else if (MyGuy == 3) {
+            led.unplot(1, 4)
+            led.plot(2, 4)
+            led.unplot(3, 4)
+        } else if (MyGuy == 4) {
+            led.unplot(2, 4)
+            led.plot(3, 4)
+            led.unplot(4, 4)
+        } else {
+            led.unplot(3, 4)
+            led.plot(4, 4)
+            led.unplot(0, 4)
+        }
     }
 })
 radio.onReceivedValue(function (name, value) {
     opponentScore = value
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    basic.clearScreen()
-    death = 0
-    radio.setGroup(128)
-    MyGuy = 3
-    line = randint(0, 4)
-    First = 0
-    Second = 0
-    Third = 0
-    Fourth = 0
-    fifth = 0
-    if (MyGuy == 3) {
-        led.plot(2, 4)
+    if (Setup == 1) {
+        Difficulty = 1
+        Setup = 0
+        basic.clearScreen()
+    } else {
+        basic.clearScreen()
+        radio.setGroup(128)
+        death = 0
+        Score = 0
+        MyGuy = 3
+        line = randint(0, 4)
+        First = 0
+        Second = 0
+        Third = 0
+        Fourth = 0
+        fifth = 0
+        if (MyGuy == 3) {
+            led.plot(2, 4)
+        }
     }
 })
 let High_Score = 0
-let Score = 0
-let opponentScore = 0
+let deathScore = 0
 let fifth = 0
 let Fourth = 0
 let Third = 0
 let Second = 0
 let First = 0
-let line = 0
-let MyGuy = 0
+let Score = 0
 let death = 0
-death = 0
-radio.setGroup(128)
-MyGuy = 3
-line = randint(0, 4)
-First = 0
-Second = 0
-Third = 0
-Fourth = 0
-fifth = 0
-if (MyGuy == 3) {
-    led.plot(2, 4)
-}
+let opponentScore = 0
+let MyGuy = 0
+let Difficulty = 0
+let line = 0
+let Setup = 0
+Setup = 1
+line = 8
+basic.showString("Setup")
 basic.forever(function () {
-    if (death > 3) {
+    if (death > deathScore) {
         line = 5
+        // Put in death > 3 for multiplayer
+        radio.sendValue("Score", Score)
     }
 })
 basic.forever(function () {
@@ -148,8 +163,34 @@ basic.forever(function () {
             death += 1
             First = 0
             line = randint(0, 4)
-            music.play(music.stringPlayable("E D D C - - - - ", 400), music.PlaybackMode.UntilDone)
         }
+    }
+})
+basic.forever(function () {
+    if (Setup == 0) {
+        music.setVolume(53)
+        death = 0
+        radio.setGroup(128)
+        MyGuy = 3
+        line = randint(0, 4)
+        First = 0
+        Second = 0
+        Third = 0
+        Fourth = 0
+        fifth = 0
+        if (MyGuy == 3) {
+            led.plot(2, 4)
+        }
+        Setup = 2
+    }
+})
+basic.forever(function () {
+    if (Difficulty == 0) {
+        deathScore = 0
+    } else if (Difficulty == 1) {
+        deathScore = 1
+    } else if (Difficulty == 2) {
+        deathScore = 2
     }
 })
 basic.forever(function () {
@@ -184,7 +225,6 @@ basic.forever(function () {
             death += 1
             fifth = 0
             line = randint(0, 4)
-            music.play(music.stringPlayable("E D D C - - - - ", 400), music.PlaybackMode.UntilDone)
         }
     }
 })
@@ -193,7 +233,6 @@ basic.forever(function () {
         Score += 1
         First = 0
         line = randint(0, 4)
-        music.play(music.stringPlayable("G A C5 - - - - - ", 400), music.PlaybackMode.UntilDone)
     }
 })
 basic.forever(function () {
@@ -233,7 +272,6 @@ basic.forever(function () {
             death += 1
             Fourth = 0
             line = randint(0, 4)
-            music.play(music.stringPlayable("E D D C - - - - ", 400), music.PlaybackMode.UntilDone)
         }
     }
 })
@@ -242,7 +280,6 @@ basic.forever(function () {
         Score += 1
         Second = 0
         line = randint(0, 4)
-        music.play(music.stringPlayable("G A C5 - - - - - ", 400), music.PlaybackMode.UntilDone)
     }
 })
 basic.forever(function () {
@@ -277,7 +314,6 @@ basic.forever(function () {
             death += 1
             Second = 0
             line = randint(0, 4)
-            music.play(music.stringPlayable("E D D C - - - - ", 400), music.PlaybackMode.UntilDone)
         }
     }
 })
@@ -313,7 +349,6 @@ basic.forever(function () {
             death += 1
             Third = 0
             line = randint(0, 4)
-            music.play(music.stringPlayable("E D D C - - - - ", 400), music.PlaybackMode.UntilDone)
         }
     }
 })
@@ -334,17 +369,19 @@ basic.forever(function () {
         Score += 1
         Third = 0
         line = randint(0, 4)
-        music.play(music.stringPlayable("G A C5 - - - - - ", 400), music.PlaybackMode.UntilDone)
     }
 })
 basic.forever(function () {
-	
+    if (Fourth == 4 && MyGuy == 4) {
+        Score += 1
+        Fourth = 0
+        line = randint(0, 4)
+    }
 })
 basic.forever(function () {
     if (fifth == 4 && MyGuy == 5) {
         Score += 1
         fifth = 0
         line = randint(0, 4)
-        music.play(music.stringPlayable("G A C5 - - - - - ", 400), music.PlaybackMode.UntilDone)
     }
 })
