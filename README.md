@@ -1,6 +1,3 @@
-
-> Open this page at [https://cheeseyd.github.io/microbitfallingdownmultiplayergame/](https://cheeseyd.github.io/microbitfallingdownmultiplayergame/)
-
 ## Use as Extension
 
 This repository can be added as an **extension** in MakeCode.
