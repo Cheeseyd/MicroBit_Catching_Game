@@ -2,7 +2,6 @@ input.onButtonPressed(Button.A, function () {
     if (Setup == 1) {
         Difficulty = 0
         Setup = 0
-        basic.clearScreen()
     } else {
         MyGuy += -1
         if (MyGuy == 1) {
@@ -32,7 +31,6 @@ input.onButtonPressed(Button.B, function () {
     if (Setup == 1) {
         Difficulty = 2
         Setup = 0
-        basic.clearScreen()
     } else {
         MyGuy += 1
         if (MyGuy == 1) {
@@ -83,6 +81,7 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
         }
     }
 })
+let waitTime = 0
 let High_Score = 0
 let deathScore = 0
 let fifth = 0
@@ -116,12 +115,12 @@ basic.forever(function () {
     if (line == 5) {
         basic.clearScreen()
         basic.showString("GameOver")
+        basic.pause(500)
         basic.showNumber(Score)
+        basic.clearScreen()
+        basic.pause(500)
         basic.showString("HS:")
         basic.showNumber(High_Score)
-        death = 0
-        line = 6
-        basic.pause(1000)
         if (Score > opponentScore) {
             basic.showIcon(IconNames.Happy)
         } else if (Score < opponentScore) {
@@ -129,41 +128,9 @@ basic.forever(function () {
         } else if (Score == opponentScore) {
             basic.showIcon(IconNames.Asleep)
         }
-    }
-})
-basic.forever(function () {
-    if (line == 0) {
-        if (First == 0) {
-            led.plot(0, 0)
-            opponentScore = randint(350000, 1000000)
-            control.waitMicros(1000000)
-            led.unplot(0, 0)
-            First += 1
-        } else if (First == 1) {
-            led.plot(0, 1)
-            control.waitMicros(opponentScore)
-            led.unplot(0, 1)
-            First += 1
-        } else if (First == 2) {
-            led.plot(0, 2)
-            control.waitMicros(opponentScore)
-            led.unplot(0, 2)
-            First += 1
-        } else if (First == 3) {
-            led.plot(0, 3)
-            control.waitMicros(opponentScore)
-            led.unplot(0, 3)
-            First += 1
-        } else if (First == 4) {
-            led.plot(0, 4)
-            control.waitMicros(opponentScore)
-            led.unplot(0, 4)
-            First += 1
-        } else if (First == 5) {
-            death += 1
-            First = 0
-            line = randint(0, 4)
-        }
+        death = 0
+        line = 6
+        basic.pause(1000)
     }
 })
 basic.forever(function () {
@@ -185,6 +152,13 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
+    if (MyGuy > 5) {
+        MyGuy = 1
+        led.plot(0, 4)
+        led.unplot(4, 4)
+    }
+})
+basic.forever(function () {
     if (Difficulty == 0) {
         deathScore = 0
     } else if (Difficulty == 1) {
@@ -194,38 +168,10 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    if (line == 4) {
-        if (fifth == 0) {
-            led.plot(4, 0)
-            opponentScore = randint(350000, 1000000)
-            control.waitMicros(opponentScore)
-            led.unplot(4, 0)
-            fifth += 1
-        } else if (fifth == 1) {
-            led.plot(4, 1)
-            control.waitMicros(opponentScore)
-            led.unplot(4, 1)
-            fifth += 1
-        } else if (fifth == 2) {
-            led.plot(4, 2)
-            control.waitMicros(opponentScore)
-            led.unplot(4, 2)
-            fifth += 1
-        } else if (fifth == 3) {
-            led.plot(4, 3)
-            control.waitMicros(opponentScore)
-            led.unplot(4, 3)
-            fifth += 1
-        } else if (fifth == 4) {
-            led.plot(4, 4)
-            control.waitMicros(opponentScore)
-            led.unplot(4, 4)
-            fifth += 1
-        } else if (fifth == 5) {
-            death += 1
-            fifth = 0
-            line = randint(0, 4)
-        }
+    if (Third == 4 && MyGuy == 3) {
+        Score += 1
+        Third = 0
+        line = randint(0, 4)
     }
 })
 basic.forever(function () {
@@ -236,43 +182,8 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    if (First >= 6) {
-        First = 0
-    }
-})
-basic.forever(function () {
-    if (line == 3) {
-        if (Fourth == 0) {
-            led.plot(3, 0)
-            opponentScore = randint(350000, 1000000)
-            control.waitMicros(opponentScore)
-            led.unplot(3, 0)
-            Fourth += 1
-        } else if (Fourth == 1) {
-            led.plot(3, 1)
-            control.waitMicros(opponentScore)
-            led.unplot(3, 1)
-            Fourth += 1
-        } else if (Fourth == 2) {
-            led.plot(3, 2)
-            control.waitMicros(opponentScore)
-            led.unplot(3, 2)
-            Fourth += 1
-        } else if (Fourth == 3) {
-            led.plot(3, 3)
-            control.waitMicros(opponentScore)
-            led.unplot(3, 3)
-            Fourth += 1
-        } else if (Fourth == 4) {
-            led.plot(3, 4)
-            control.waitMicros(opponentScore)
-            led.unplot(3, 4)
-            Fourth += 1
-        } else if (Fourth == 5) {
-            death += 1
-            Fourth = 0
-            line = randint(0, 4)
-        }
+    if (MyGuy == 0) {
+        MyGuy = 5
     }
 })
 basic.forever(function () {
@@ -283,31 +194,83 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
+    if (First >= 6) {
+        First = 0
+    }
+})
+basic.forever(function () {
+    if (line == 0) {
+        if (First == 0) {
+            led.plot(0, 0)
+            if (Difficulty == 0) {
+                waitTime = randint(200000, 350000)
+            } else if (Difficulty == 1) {
+                waitTime = randint(350000, 1000000)
+            } else if (Difficulty == 2) {
+                waitTime = randint(350000, 1000000)
+            }
+            control.waitMicros(waitTime)
+            led.unplot(0, 0)
+            First += 1
+        } else if (First == 1) {
+            led.plot(0, 1)
+            control.waitMicros(waitTime)
+            led.unplot(0, 1)
+            First += 1
+        } else if (First == 2) {
+            led.plot(0, 2)
+            control.waitMicros(waitTime)
+            led.unplot(0, 2)
+            First += 1
+        } else if (First == 3) {
+            led.plot(0, 3)
+            control.waitMicros(waitTime)
+            led.unplot(0, 3)
+            First += 1
+        } else if (First == 4) {
+            led.plot(0, 4)
+            control.waitMicros(waitTime)
+            led.unplot(0, 4)
+            First += 1
+        } else if (First == 5) {
+            death += 1
+            First = 0
+            line = randint(0, 4)
+        }
+    }
+})
+basic.forever(function () {
     if (line == 1) {
         if (Second == 0) {
             led.plot(1, 0)
-            opponentScore = randint(350000, 1000000)
-            control.waitMicros(opponentScore)
+            if (Difficulty == 0) {
+                waitTime = randint(200000, 350000)
+            } else if (Difficulty == 1) {
+                waitTime = randint(350000, 1000000)
+            } else if (Difficulty == 2) {
+                waitTime = randint(350000, 1000000)
+            }
+            control.waitMicros(waitTime)
             led.unplot(1, 0)
             Second += 1
         } else if (Second == 1) {
             led.plot(1, 1)
-            control.waitMicros(opponentScore)
+            control.waitMicros(waitTime)
             led.unplot(1, 1)
             Second += 1
         } else if (Second == 2) {
             led.plot(1, 2)
-            control.waitMicros(opponentScore)
+            control.waitMicros(waitTime)
             led.unplot(1, 2)
             Second += 1
         } else if (Second == 3) {
             led.plot(1, 3)
-            control.waitMicros(opponentScore)
+            control.waitMicros(waitTime)
             led.unplot(1, 3)
             Second += 1
         } else if (Second == 4) {
             led.plot(1, 4)
-            control.waitMicros(opponentScore)
+            control.waitMicros(waitTime)
             led.unplot(1, 4)
             Second += 1
         } else if (Second == 5) {
@@ -321,28 +284,34 @@ basic.forever(function () {
     if (line == 2) {
         if (Third == 0) {
             led.plot(2, 0)
-            opponentScore = randint(350000, 1000000)
-            control.waitMicros(opponentScore)
+            if (Difficulty == 0) {
+                waitTime = randint(200000, 350000)
+            } else if (Difficulty == 1) {
+                waitTime = randint(350000, 1000000)
+            } else if (Difficulty == 2) {
+                waitTime = randint(350000, 1000000)
+            }
+            control.waitMicros(waitTime)
             led.unplot(2, 0)
             Third += 1
         } else if (Third == 1) {
             led.plot(2, 1)
-            control.waitMicros(opponentScore)
+            control.waitMicros(waitTime)
             led.unplot(2, 1)
             Third += 1
         } else if (Third == 2) {
             led.plot(2, 2)
-            control.waitMicros(opponentScore)
+            control.waitMicros(waitTime)
             led.unplot(2, 2)
             Third += 1
         } else if (Third == 3) {
             led.plot(2, 3)
-            control.waitMicros(opponentScore)
+            control.waitMicros(waitTime)
             led.unplot(2, 3)
             Third += 1
         } else if (Third == 4) {
             led.plot(2, 4)
-            control.waitMicros(opponentScore)
+            control.waitMicros(waitTime)
             led.unplot(2, 4)
             Third += 1
         } else if (Third == 5) {
@@ -353,22 +322,85 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    if (MyGuy > 5) {
-        MyGuy = 1
-        led.plot(0, 4)
-        led.unplot(4, 4)
+    if (line == 4) {
+        if (fifth == 0) {
+            led.plot(4, 0)
+            if (Difficulty == 0) {
+                waitTime = randint(200000, 350000)
+            } else if (Difficulty == 1) {
+                waitTime = randint(350000, 1000000)
+            } else if (Difficulty == 2) {
+                waitTime = randint(350000, 1000000)
+            }
+            control.waitMicros(waitTime)
+            led.unplot(4, 0)
+            fifth += 1
+        } else if (fifth == 1) {
+            led.plot(4, 1)
+            control.waitMicros(waitTime)
+            led.unplot(4, 1)
+            fifth += 1
+        } else if (fifth == 2) {
+            led.plot(4, 2)
+            control.waitMicros(waitTime)
+            led.unplot(4, 2)
+            fifth += 1
+        } else if (fifth == 3) {
+            led.plot(4, 3)
+            control.waitMicros(waitTime)
+            led.unplot(4, 3)
+            fifth += 1
+        } else if (fifth == 4) {
+            led.plot(4, 4)
+            control.waitMicros(waitTime)
+            led.unplot(4, 4)
+            fifth += 1
+        } else if (fifth == 5) {
+            death += 1
+            fifth = 0
+            line = randint(0, 4)
+        }
     }
 })
 basic.forever(function () {
-    if (MyGuy == 0) {
-        MyGuy = 5
-    }
-})
-basic.forever(function () {
-    if (Third == 4 && MyGuy == 3) {
-        Score += 1
-        Third = 0
-        line = randint(0, 4)
+    if (line == 3) {
+        if (Fourth == 0) {
+            led.plot(3, 0)
+            if (Difficulty == 0) {
+                waitTime = randint(200000, 350000)
+            } else if (Difficulty == 1) {
+                waitTime = randint(350000, 1000000)
+            } else if (Difficulty == 2) {
+                waitTime = randint(350000, 1000000)
+            }
+            control.waitMicros(waitTime)
+            led.unplot(3, 0)
+            Fourth += 1
+        } else if (Fourth == 1) {
+            led.plot(3, 1)
+            control.waitMicros(waitTime)
+            led.unplot(3, 1)
+            Fourth += 1
+        } else if (Fourth == 2) {
+            led.plot(3, 2)
+            control.waitMicros(waitTime)
+            led.unplot(3, 2)
+            Fourth += 1
+        } else if (Fourth == 3) {
+            led.plot(3, 3)
+            control.waitMicros(waitTime)
+            led.unplot(3, 3)
+            Fourth += 1
+        } else if (Fourth == 4) {
+            led.plot(3, 4)
+            control.waitMicros(waitTime)
+            led.unplot(3, 4)
+            Fourth += 1
+        } else if (Fourth == 5) {
+            death += 1
+            Fourth = 0
+            line = randint(0, 4)
+        }
     }
 })
 basic.forever(function () {
